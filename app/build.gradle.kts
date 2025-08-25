@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -43,7 +45,7 @@ android {
     buildFeatures {
         compose = true
     }
-    packagingOptions {
+    fun Packaging.() {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -62,9 +64,9 @@ dependencies {
     implementation(libs.androidx.compose.material.icons)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.material3)
 
     implementation(libs.bundles.coil)
+    implementation(libs.bundles.material3)
 
     implementation(libs.navigation.compose)
     implementation(libs.accompanist.pager)
@@ -76,7 +78,10 @@ dependencies {
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
+
     implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
 
     // Moshi
     implementation(libs.moshi)

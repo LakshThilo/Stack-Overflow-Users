@@ -7,10 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,7 +23,23 @@ object NetworkModule {
         .build()
 
     @Provides @Singleton
-    fun okHttp(): OkHttpClient = OkHttpClient.Builder()
+    fun loggingInterceptor(): HttpLoggingInterceptor {
+        val logger = HttpLoggingInterceptor.Logger { msg -> android.util.Log.d("OkHttp", msg) }
+        return HttpLoggingInterceptor(logger).apply {
+            level = HttpLoggingInterceptor.Level.BODY
+            redactHeader("Authorization")
+            redactHeader("Cookie")
+        }
+    }
+
+    @Provides @Singleton
+    fun okHttp(
+        logging: HttpLoggingInterceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(logging)
+        .connectTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+        .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+        .writeTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
         .build()
 
     @Provides @Singleton

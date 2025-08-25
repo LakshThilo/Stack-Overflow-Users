@@ -51,7 +51,8 @@ val LightPeach      = Color(0xFFFFC4AE) // peach
 val LightMint       = Color(0xFFB7F2CF) // mint green
 val LightTerracotta = Color(0xFFE8AB8F) // terracotta
 val LightSlate      = Color(0xFFBAC8D6) // blue-gray slate
-val LightMulberry   = Color(0xFFE7A8C8) // mulberry pink
+val LightMulberry   = Color(0xFFE7A8C8) // mulberry pin
+val White   = Color(0xFFFFFFF1) // mulberry pink
 
 val SandYellow = Color(0xFFFFBD64)
 
