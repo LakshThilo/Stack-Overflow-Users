@@ -17,7 +17,7 @@ coroutines = "1.7.1"
 
 navigation = "2.5.3"
 
-coil2 = "2.1.0"
+coil3 = "3.0.0-rc02"
 
 hilt = "2.49"
 hiltNavigationCompose = "1.0.0"
@@ -58,7 +58,11 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
 
-coil-compose2 = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil2" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil3" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3" }
+coil-mp = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
+
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
 accompanist-system-ui = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanistSystemUi" }
@@ -92,3 +96,10 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 
+[bundles]
+coil = [
+    "coil-compose",
+    "coil-compose-core",
+    "coil-network-okhttp",
+    "coil-mp"
+]

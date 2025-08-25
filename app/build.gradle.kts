@@ -63,7 +63,8 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.material3)
-    implementation(libs.coil.compose2)
+
+    implementation(libs.bundles.coil)
 
     implementation(libs.navigation.compose)
     implementation(libs.accompanist.pager)
