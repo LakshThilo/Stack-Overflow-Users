@@ -17,4 +17,22 @@ class RemoteStackUsersDataSourceImpl @Inject constructor(
             api.getStackExchangeUsers()
         }
     }
+
+    override suspend fun getStackUsers(
+        page: Int,
+        pageSize: Int,
+        order: String,
+        sort: String,
+        site: String
+    ): Result<StackUserDto, DataError.Remote> {
+        return safeApi(moshi) {
+            api.getStackExchangeUsers(
+                page = page,
+                pageSize = pageSize,
+                order = order,
+                sort = sort,
+                site = site
+            )
+        }
+    }
 }

@@ -5,5 +5,12 @@ import com.blpw.pixelex.common.domain.DataError
 import com.blpw.pixelex.common.domain.Result
 
 interface RemoteStackUsersDataSource {
-    suspend fun getStackUsers( ): Result<StackUserDto, DataError.Remote>
+    suspend fun getStackUsers(): Result<StackUserDto, DataError.Remote>
+    suspend fun getStackUsers(
+        page: Int,
+        pageSize: Int,
+        order: String = "desc",
+        sort: String = "reputation",
+        site: String = "stackoverflow"
+    ): Result<StackUserDto, DataError.Remote>
 }

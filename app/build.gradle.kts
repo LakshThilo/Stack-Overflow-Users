@@ -67,6 +67,7 @@ dependencies {
 
     implementation(libs.bundles.coil)
     implementation(libs.bundles.material3)
+    implementation(libs.bundles.paging)
 
     implementation(libs.navigation.compose)
     implementation(libs.accompanist.pager)

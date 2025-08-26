@@ -14,7 +14,7 @@ data class StackUserInfoModel(
     val creationDate: Int,
     val isEmployee: Boolean,
     val lastAccessDate: Int,
-    val lastModifiedDate: Int,
+    val lastModifiedDate: Int?,
     val reputationChangeDay: Int,
     val reputationChangeMonth: Int,
     val reputationChangeQuarter: Int,

@@ -28,7 +28,7 @@ data class UserInfoDto(
     @Json(name = "creation_date") val creationDate: Int,
     @Json(name = "is_employee") val isEmployee: Boolean,
     @Json(name = "last_access_date") val lastAccessDate: Int,
-    @Json(name = "last_modified_date") val lastModifiedDate: Int,
+    @Json(name = "last_modified_date") val lastModifiedDate: Int? = null,
     @Json(name = "reputation_change_day") val reputationChangeDay: Int,
     @Json(name = "reputation_change_month") val reputationChangeMonth: Int,
     @Json(name = "reputation_change_quarter") val reputationChangeQuarter: Int,

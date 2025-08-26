@@ -33,6 +33,8 @@ okhttpLogger = "4.12.0"
 
 room = "2.6.1"
 
+paging = "3.3.6"
+
 accompanistPager = "0.12.0"
 accompanistPagerIndicators = "0.21.0-beta"
 accompanistSystemUi = "0.20.3"
@@ -95,6 +97,12 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLogger" }
 
+paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+paging-common  = { module = "androidx.paging:paging-common-ktx",  version.ref = "paging" } # useful for unit tests / non-Android
+paging-compose = { module = "androidx.paging:paging-compose",     version.ref = "paging" }
+paging-testing = { module = "androidx.paging:paging-testing",      version.ref = "paging" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -112,3 +120,5 @@ coil = [
 material3 = [
     "material3"
 ]
+
+paging = ["paging-runtime", "paging-compose"]

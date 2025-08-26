@@ -34,7 +34,6 @@ private fun HttpException.requestUrl(): String? =
 fun HttpException.toHttpRemoteError(moshi: Moshi): Remote {
     val code = code()
     val url  = requestUrl()
-    // Read once here; don't try to read later (ResponseBody is one-shot)
     val raw  = runCatching { response()?.errorBody()?.string().orEmpty() }.getOrDefault("")
 
     val parsed = runCatching {
@@ -45,12 +44,10 @@ fun HttpException.toHttpRemoteError(moshi: Moshi): Remote {
     val parsedName = parsed?.name
     val parsedId = parsed?.id
 
-    // Secondary fallbacks
     val respMsg = response()?.message().takeUnless { it.isNullOrBlank() }
     val exMsg   = message().takeUnless { it.isNullOrBlank() }
     val snippet = raw.take(200).replace(Regex("\\s+"), " ").trim().takeIf { it.isNotBlank() }
 
-    // Compose a meaningful final message
     val msg = buildString {
         append(parsedMsg ?: respMsg ?: exMsg ?: "HTTP $code")
         if (!parsedName.isNullOrBlank()) append(" [$parsedName]")
@@ -68,7 +65,6 @@ fun HttpException.toHttpRemoteError(moshi: Moshi): Remote {
         else -> Remote.ServerError(code, msg)
     }
 }
-
 
 fun Throwable.toLocalError(): Local = when (this) {
     is JsonDataException, is JsonEncodingException -> Local.Serialization

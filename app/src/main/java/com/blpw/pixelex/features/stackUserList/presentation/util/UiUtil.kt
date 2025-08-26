@@ -14,5 +14,5 @@ fun List<StackUserInfoModel>.sortedByOption(option: StackUserSort): List<StackUs
         StackUserSort.REPUTATION -> sortedByDescending { it.reputation }
         StackUserSort.CREATION   -> sortedByDescending { it.creationDate.toLong() } // seconds -> bigger = newer
         StackUserSort.NAME       -> sortedBy { it.displayName.lowercase() }
-        StackUserSort.MODIFIED   -> sortedByDescending { it.lastModifiedDate.toLong() }
+        StackUserSort.MODIFIED   -> sortedByDescending { it.lastModifiedDate?.toLong() }
     }
