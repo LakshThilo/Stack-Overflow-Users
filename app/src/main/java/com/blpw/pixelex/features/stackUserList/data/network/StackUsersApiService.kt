@@ -12,6 +12,7 @@ interface StackUsersApiService {
         @Query("pagesize") pageSize: Int = 20,
         @Query("order") order: String = "desc",
         @Query("sort") sort: String = "reputation",
-        @Query("site") site: String = "stackoverflow"
+        @Query("site") site: String = "stackoverflow",
+        @Query("key") key: String = "rl_rab7S3vTi1eYdpPXcxBtqx1gw"
     ): StackUserDto
 }

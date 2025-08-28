@@ -54,8 +54,11 @@ val LightSlate      = Color(0xFFBAC8D6) // blue-gray slate
 val LightMulberry   = Color(0xFFE7A8C8) // mulberry pin
 val White   = Color(0xFFFFFFF1) // mulberry pink
 
-val CardMint = Color(0xFFCDEED7)
+val CardMint = Color(0xFFD4EEDB)
+val borderMint = Color(0xFF9CECBB)
+val selectedMint = Color(0xFF94EEB6)
 val CardTextGreen = Color(0xFF1E9662)
+val backgroundGreen = Color(0xFFBDE2BD)
 
 val SandYellow = Color(0xFFFFBD64)
 

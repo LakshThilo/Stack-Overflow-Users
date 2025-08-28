@@ -18,7 +18,7 @@ class RemoteStackUsersDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getStackUsers(
+    override suspend fun getStackUsersUsingDataSource(
         page: Int,
         pageSize: Int,
         order: String,

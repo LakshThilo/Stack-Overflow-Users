@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.blpw.pixelex.features.stackUserList.presentation.util.StackUserSort
+import com.blpw.pixelex.ui.theme.CardMint
+import com.blpw.pixelex.ui.theme.CardTextGreen
 
 @Composable
 fun SortChipsBar(
@@ -61,16 +63,16 @@ fun PillChip(
     modifier: Modifier = Modifier
 ) {
     val bg = if (selected)
-        MaterialTheme.colorScheme.background.copy(alpha = 0.10f)
+        CardMint
     else Color.White
 
     val content = if (selected)
-        MaterialTheme.colorScheme.primary
-    else Color(0xFF1B1B1F)
+        CardTextGreen
+    else Color.Black.copy(alpha = 0.5f)
 
     val borderColor = if (selected)
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
-    else Color.Black.copy(alpha = 0.06f)
+        CardTextGreen
+    else CardMint
 
     Surface(
         shape = RoundedCornerShape(18.dp),

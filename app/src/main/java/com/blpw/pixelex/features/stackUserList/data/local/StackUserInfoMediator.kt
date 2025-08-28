@@ -9,14 +9,13 @@ import com.blpw.pixelex.features.stackUserList.data.local.entities.StackUserJoin
 import com.blpw.pixelex.features.stackUserList.data.local.entities.UserRemoteKeys
 import com.blpw.pixelex.features.stackUserList.data.mappers.toStackUserInfoEntity
 import com.blpw.pixelex.features.stackUserList.data.network.StackUsersApiService
+import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class StackUserInfoMediator @Inject constructor(
     private val api: StackUsersApiService,
-    private val db: StackUserDatabase,
-    // optionally pass sort/order/site to keep consistent with DAO ordering
-    // private val sort: String = "reputation", private val order: String = "desc", private val site: String = "stackoverflow"
+    private val db: StackUserDatabase
 ) : RemoteMediator<Int, StackUserJoin>() {
 
     override suspend fun load(
@@ -24,45 +23,42 @@ class StackUserInfoMediator @Inject constructor(
         state: PagingState<Int, StackUserJoin>
     ): MediatorResult {
         return try {
-            // 1) Decide which page to load
+            val wait = ApiBackoff.remainingMs()
+            if (wait > 0) {
+                kotlinx.coroutines.delay(wait)
+            }
+
             val page = when (loadType) {
                 LoadType.REFRESH -> {
                     val remoteKey = getRemoteKeyClosestToCurrentPosition(state)
-                    // If remoteKey is null, we’re starting fresh at page 1
                     remoteKey?.nextKey?.minus(1) ?: 1
                 }
                 LoadType.PREPEND -> {
                     val remoteKey = getRemoteKeyForFirstItem(state)
                     val prevKey = remoteKey?.prevKey
-                    if (prevKey == null) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
-                    }
+                    if (prevKey == null) return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
                     prevKey
                 }
                 LoadType.APPEND -> {
                     val remoteKey = getRemoteKeyForLastItem(state)
                     val nextKey = remoteKey?.nextKey
-                    if (nextKey == null) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
-                    }
+                    if (nextKey == null) return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
                     nextKey
                 }
             }
 
-            // 2) Fetch
             val pageSize = state.config.pageSize
             val response = api.getStackExchangeUsers(page = page, pageSize = pageSize)
-            val items = response.items
-            // Prefer API flag if present
-            val endOfPagination = (response.hasMore == false) || items.isEmpty()
+            response.backoff?.let { ApiBackoff.setBackoffSeconds(it) }
+            val users = response.items
+            val end = !response.hasMore || response.items.isEmpty()
 
-            // 3) Persist
-            val entities = items.map { it.toStackUserInfoEntity() }
+            val entities = users.map { userInfoDto -> userInfoDto.toStackUserInfoEntity() }
+
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     db.userRemoteKeysDao().clearKeys()
                     db.stackUserInfoDao().clearUsers()
-                    // DO NOT clear follows
                 }
 
                 db.stackUserInfoDao().upsertUsers(entities)
@@ -71,27 +67,32 @@ class StackUserInfoMediator @Inject constructor(
                     UserRemoteKeys(
                         userId = it.userId,
                         prevKey = if (page == 1) null else page - 1,
-                        nextKey = if (endOfPagination) null else page + 1
+                        nextKey = if (end) null else page + 1
                     )
                 }
                 db.userRemoteKeysDao().insertAll(keys)
             }
 
-            MediatorResult.Success(endOfPaginationReached = endOfPagination)
+            MediatorResult.Success(endOfPaginationReached = end)
+        } catch (e: retrofit2.HttpException) {
+            val retryAfter = e.response()?.headers()?.get("Retry-After")?.toIntOrNull()
+            if (retryAfter != null) ApiBackoff.setBackoffSeconds(retryAfter)
+            return MediatorResult.Error(e)
+        } catch (e: IOException) {
+            return MediatorResult.Error(e)
         } catch (t: Throwable) {
-            MediatorResult.Error(t)
+            return MediatorResult.Error(t)
         }
     }
 
     private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, StackUserJoin>): UserRemoteKeys? {
-        // last page that has data -> last item
-        val lastItem = state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()
-        return lastItem?.let { db.userRemoteKeysDao().remoteKeys(it.user.userId) }
+        val last = state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull() ?: return null
+        return db.userRemoteKeysDao().remoteKeys(last.user.userId)
     }
 
     private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, StackUserJoin>): UserRemoteKeys? {
-        val firstItem = state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()
-        return firstItem?.let { db.userRemoteKeysDao().remoteKeys(it.user.userId) }
+        val first = state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull() ?: return null
+        return db.userRemoteKeysDao().remoteKeys(first.user.userId)
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, StackUserJoin>): UserRemoteKeys? {
@@ -100,3 +101,4 @@ class StackUserInfoMediator @Inject constructor(
         return db.userRemoteKeysDao().remoteKeys(closest.user.userId)
     }
 }
+

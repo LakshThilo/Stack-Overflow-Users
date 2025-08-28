@@ -23,7 +23,7 @@ class StackUsersPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, StackUserInfoModel> {
         val page = params.key ?: 1
-        return when (val result = remote.getStackUsers(
+        return when (val result = remote.getStackUsersUsingDataSource(
             page = page,
             pageSize = params.loadSize.coerceAtMost(pageSize),
             order = order,

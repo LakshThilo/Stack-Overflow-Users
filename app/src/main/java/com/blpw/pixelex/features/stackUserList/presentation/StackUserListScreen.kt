@@ -17,9 +17,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -27,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.blpw.pixelex.common.util.backgroundPalette
 import com.blpw.pixelex.features.stackUserList.presentation.components.SortChipsBar
 import com.blpw.pixelex.features.stackUserList.presentation.components.StackedCardsList
-import com.blpw.pixelex.features.stackUserList.presentation.util.sortedByOption
 import com.blpw.pixelex.navigation.LocalNavigationHelper
 import com.blpw.pixelex.navigation.NavigationHelper
+import com.blpw.pixelex.ui.theme.CardTextGreen
+import com.blpw.pixelex.ui.theme.backgroundGreen
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -75,10 +73,10 @@ fun StackUserListScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceBright)
+            .background(backgroundGreen)
             .padding(start = 16.dp, top = 54.dp, end = 16.dp)
     ) {
-        Text("Stack Overflow Users", style = MaterialTheme.typography.headlineMedium)
+        Text("Stack Overflow Users", style = MaterialTheme.typography.headlineMedium, color = CardTextGreen)
         Spacer(Modifier.height(16.dp))
 
         SwipeRefresh(
@@ -90,7 +88,6 @@ fun StackUserListScreenContent(
             modifier = Modifier.fillMaxSize()
         ) {
             Column {
-                // Still lets you switch sort in the VM (prefer DAO ORDER BY per sort)
                 SortChipsBar(
                     selected = sort,
                     onSelectedChange = { viewModel.updateSort(it) }

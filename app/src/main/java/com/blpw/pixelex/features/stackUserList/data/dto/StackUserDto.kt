@@ -9,7 +9,8 @@ data class StackUserDto(
     @Json(name = "has_more") val hasMore: Boolean,
     @Json(name = "items") val items: List<StackUserInfoDto>,
     @Json(name = "quota_max") val quotaMax: Int,
-    @Json(name = "quota_remaining") val quotaRemaining: Int
+    @Json(name = "quota_remaining") val quotaRemaining: Int,
+    @Json(name = "backoff") val backoff: Int? = null
 )
 
 @JsonClass(generateAdapter = true)

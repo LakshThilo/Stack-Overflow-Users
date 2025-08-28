@@ -1,6 +1,5 @@
 package com.blpw.pixelex.features.stackUserList.data.repository
 
-import androidx.compose.ui.res.painterResource
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -61,7 +60,7 @@ class DefaultStackUsersRepository @Inject constructor(
     override fun getStackUserFromRemote(): Flow<PagingData<StackUserInfoModel>> =
         Pager(
             config = PagingConfig(pageSize = 30, enablePlaceholders = false),
-            remoteMediator = mediator,                  // must be RemoteMediator<Int, StackUserJoin>
+            remoteMediator = mediator,
             pagingSourceFactory = { db.stackUserInfoDao().pagingSource() }
         ).flow.map { paging -> paging.map { it.toDomain() } }
 

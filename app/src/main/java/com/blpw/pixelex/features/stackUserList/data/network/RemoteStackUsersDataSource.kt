@@ -6,7 +6,7 @@ import com.blpw.pixelex.common.domain.Result
 
 interface RemoteStackUsersDataSource {
     suspend fun getStackUsers(): Result<StackUserDto, DataError.Remote>
-    suspend fun getStackUsers(
+    suspend fun getStackUsersUsingDataSource(
         page: Int,
         pageSize: Int,
         order: String = "desc",

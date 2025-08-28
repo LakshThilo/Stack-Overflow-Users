@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,9 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.ui.theme.CardMint
 import com.blpw.pixelex.ui.theme.CardTextGreen
-import com.blpw.pixelex.ui.theme.LightMint
 import com.blpw.pixelex.ui.theme.PixelExTheme
-import kotlin.Int
+import com.blpw.pixelex.ui.theme.borderMint
 import kotlin.math.max
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -125,6 +124,7 @@ fun StackUserItemCard(
                     cornerRadius = CornerRadius(handleH / 2f, handleH / 2f)
                 )
             }
+            .border(1.dp, borderMint.copy(), shape),
     ) {
         Box(Modifier.fillMaxWidth()) {
             if (!expanded) {
