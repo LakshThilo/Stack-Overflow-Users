@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.blpw.pixelex.common.data.toUserMessage
 import com.blpw.pixelex.features.stackUserList.presentation.components.SortChipsBar
 import com.blpw.pixelex.features.stackUserList.presentation.components.StackedCardsList
 import com.blpw.pixelex.navigation.LocalNavigationHelper
@@ -76,14 +77,18 @@ fun StackUserListScreenContent(
             .background(backgroundGreen)
             .padding(start = 16.dp, top = 54.dp, end = 16.dp)
     ) {
-        Text("Stack Overflow Users", style = MaterialTheme.typography.headlineMedium, color = CardTextGreen)
+        Text(
+            "Stack Overflow Users",
+            style = MaterialTheme.typography.headlineMedium,
+            color = CardTextGreen
+        )
         Spacer(Modifier.height(16.dp))
 
         SwipeRefresh(
             state = swipeState,
             onRefresh = { pagingItems.refresh() },
             indicator = { state, trigger ->
-                SwipeRefreshIndicator(state = state, refreshTriggerDistance = trigger)
+                 SwipeRefreshIndicator(state = state, refreshTriggerDistance = trigger)
             },
             modifier = Modifier.fillMaxSize()
         ) {
@@ -96,7 +101,7 @@ fun StackUserListScreenContent(
                 when (refresh) {
                     is LoadState.Error -> if (pagingItems.itemCount == 0) {
                         FullScreenError(
-                            message = refresh.error.localizedMessage ?: "Something went wrong.",
+                            message = refresh.error.toUserMessage(),
                             onRetry = { pagingItems.retry() }
                         )
                         return@SwipeRefresh
@@ -105,11 +110,11 @@ fun StackUserListScreenContent(
                 }
 
                 if (isInitialLoading) {
-                    LoadingIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 48.dp)
-                    )
+//                    LoadingIndicator(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(top = 48.dp)
+//                    )
                 } else {
                     StackedCardsList(
                         pagingItems = pagingItems,
@@ -127,17 +132,6 @@ fun StackUserListScreenContent(
     }
 }
 
-@Composable
-fun PagingListFooterLoading() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
 
 @Composable
 private fun FullScreenError(message: String, onRetry: () -> Unit) {

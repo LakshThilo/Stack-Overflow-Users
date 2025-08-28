@@ -1,26 +1,26 @@
 package com.blpw.pixelex.features.stackUserList.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.presentation.PagingListFooterError
-import com.blpw.pixelex.features.stackUserList.presentation.PagingListFooterLoading
-import com.blpw.pixelex.features.stackUserList.presentation.StackUsersViewModel
 
 @Composable
 fun StackedCardsList(
@@ -63,3 +63,16 @@ fun StackedCardsList(
         }
     }
 }
+
+@Composable
+fun PagingListFooterLoading() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+

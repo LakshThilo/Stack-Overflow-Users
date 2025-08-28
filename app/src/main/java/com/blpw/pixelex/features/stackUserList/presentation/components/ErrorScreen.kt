@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.blpw.pixelex.features.stackUserList.domain.StackUserSort
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +28,6 @@ import com.blpw.pixelex.common.presentation.UiErrorModel
 import com.blpw.pixelex.common.presentation.toUiError
 import com.blpw.pixelex.features.stackUserList.presentation.StackUserState
 import com.blpw.pixelex.features.stackUserList.presentation.UiErrorType
-import com.blpw.pixelex.features.stackUserList.presentation.util.StackUserSort
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

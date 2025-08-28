@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.domain.StackUserRepository
-import com.blpw.pixelex.features.stackUserList.presentation.util.StackUserSort
+import com.blpw.pixelex.features.stackUserList.domain.StackUserSort
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

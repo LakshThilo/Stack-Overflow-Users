@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.blpw.pixelex.features.stackUserList.presentation.util.StackUserSort
+import com.blpw.pixelex.features.stackUserList.domain.StackUserSort
 import com.blpw.pixelex.ui.theme.CardMint
 import com.blpw.pixelex.ui.theme.CardTextGreen
 
