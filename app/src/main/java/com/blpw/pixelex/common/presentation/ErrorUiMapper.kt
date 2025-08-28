@@ -1,5 +1,8 @@
-package com.blpw.pixelex.common.data
+package com.blpw.pixelex.common.presentation
 
+import com.google.gson.JsonSyntaxException
+import com.squareup.moshi.JsonDataException
+import retrofit2.HttpException
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -18,13 +21,13 @@ fun Throwable.toUserMessage(): String = when (this) {
         "Network is slow. Please try again."
     is IOException ->
         "Network error. Please try again."
-    is retrofit2.HttpException -> when (code()) {
+    is HttpException -> when (code()) {
         429 -> "Too many requests. Please wait and try again."
         in 500..599 -> "Server is having issues. Try again later."
         401, 403 -> "Access denied. Check your API key."
         else -> "Server error (${code()}). Please try again."
     }
-    is com.squareup.moshi.JsonDataException,
-    is com.google.gson.JsonSyntaxException -> "Data error. Please try again."
+    is JsonDataException,
+    is JsonSyntaxException -> "Data error. Please try again."
     else -> localizedMessage ?: "Something went wrong."
 }

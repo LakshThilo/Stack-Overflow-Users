@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.blpw.pixelex.common.data.toUserMessage
+import com.blpw.pixelex.common.presentation.toUserMessage
 import com.blpw.pixelex.features.stackUserList.presentation.components.SortChipsBar
 import com.blpw.pixelex.features.stackUserList.presentation.components.StackedCardsList
 import com.blpw.pixelex.navigation.LocalNavigationHelper
@@ -131,7 +131,6 @@ fun StackUserListScreenContent(
         }
     }
 }
-
 
 @Composable
 private fun FullScreenError(message: String, onRetry: () -> Unit) {

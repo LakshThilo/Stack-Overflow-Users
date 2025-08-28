@@ -44,7 +44,6 @@ data class UserRemoteKeys(
     val nextKey: Int?
 )
 
-/** JOIN projection for paging that includes the boolean flag. */
 data class StackUserJoin(
     @Embedded val user: StackUserInfoEntity,
     val isFollowed: Boolean

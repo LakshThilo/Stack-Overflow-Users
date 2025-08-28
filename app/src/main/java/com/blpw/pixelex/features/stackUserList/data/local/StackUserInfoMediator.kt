@@ -7,7 +7,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.blpw.pixelex.features.stackUserList.data.local.entities.StackUserJoin
 import com.blpw.pixelex.features.stackUserList.data.local.entities.UserRemoteKeys
-import com.blpw.pixelex.features.stackUserList.data.mappers.toStackUserInfoEntity
+import com.blpw.pixelex.features.stackUserList.data.dataMappers.toStackUserInfoEntity
 import com.blpw.pixelex.features.stackUserList.data.network.StackUsersApiService
 import java.io.IOException
 import javax.inject.Inject

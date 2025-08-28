@@ -3,7 +3,7 @@ package com.blpw.pixelex.features.stackUserList.data
 import androidx.paging.PagingSource
 import com.blpw.pixelex.common.domain.Result
 import androidx.paging.PagingState
-import com.blpw.pixelex.features.stackUserList.data.mappers.toStackUserInfoModel
+import com.blpw.pixelex.features.stackUserList.data.dataMappers.toStackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.data.network.RemoteStackUsersDataSource
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 
