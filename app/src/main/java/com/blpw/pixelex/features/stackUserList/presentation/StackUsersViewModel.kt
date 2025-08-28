@@ -9,11 +9,13 @@ import com.blpw.pixelex.features.stackUserList.domain.StackUserRepository
 import com.blpw.pixelex.features.stackUserList.presentation.util.StackUserSort
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -24,8 +26,18 @@ class StackUsersViewModel @Inject constructor(
 
     val sort = MutableStateFlow(StackUserSort.REPUTATION)
 
+    val usersPagingFromRemote: Flow<PagingData<StackUserInfoModel>> =
+        stackUserRepository.getStackUserFromRemote()
+            .cachedIn(viewModelScope)
+
+    fun onFollowClick(userId: Int, isCurrentlyFollowed: Boolean) {
+        viewModelScope.launch {
+            stackUserRepository.setFollow(userId, follow = !isCurrentlyFollowed)
+        }
+    }
+
     val usersPaging: StateFlow<PagingData<StackUserInfoModel>> =
-        sort.flatMapLatest { stackUserRepository.getPagedUsers(it.name) }
+        sort.flatMapLatest { stackUserRepository.getStackUsersUsingPaging(it.name) }
             .cachedIn(viewModelScope)
             .stateIn(
                 viewModelScope,
@@ -37,3 +49,4 @@ class StackUsersViewModel @Inject constructor(
         if (sort.value != newSort) sort.value = newSort
     }
 }
+

@@ -93,6 +93,7 @@ retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLogger" }
@@ -120,5 +121,6 @@ coil = [
 material3 = [
     "material3"
 ]
+room = ["room-runtime", "room-ktx", "room-paging"]
 
-paging = ["paging-runtime", "paging-compose"]
+paging = ["paging-runtime", "paging-compose", "paging-common", "paging-testing"]

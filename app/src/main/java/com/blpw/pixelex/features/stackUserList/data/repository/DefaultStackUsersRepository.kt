@@ -1,9 +1,12 @@
 package com.blpw.pixelex.features.stackUserList.data.repository
 
+import androidx.compose.ui.res.painterResource
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.blpw.pixelex.features.stackUserList.data.mappers.toDomain
+import androidx.paging.map
+import com.blpw.pixelex.features.stackUserList.data.mappers.toStackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.data.network.RemoteStackUsersDataSource
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.domain.StackUserRepository
@@ -11,11 +14,19 @@ import com.blpw.pixelex.common.domain.DataError
 import com.blpw.pixelex.common.domain.Result
 import com.blpw.pixelex.common.domain.map
 import com.blpw.pixelex.features.stackUserList.data.StackUsersPagingSource
+import com.blpw.pixelex.features.stackUserList.data.local.StackUserDatabase
+import com.blpw.pixelex.features.stackUserList.data.local.StackUserInfoMediator
+import com.blpw.pixelex.features.stackUserList.data.local.entities.FollowEntity
+import com.blpw.pixelex.features.stackUserList.data.local.entities.StackUserJoin
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
+@OptIn(ExperimentalPagingApi::class)
 class DefaultStackUsersRepository @Inject constructor(
-    private val remoteDataSource: RemoteStackUsersDataSource
+    private val remoteDataSource: RemoteStackUsersDataSource,
+    private val mediator: StackUserInfoMediator,
+    private val db: StackUserDatabase,
 ) : StackUserRepository {
 
     override suspend fun getStackUsers(): Result<List<StackUserInfoModel>, DataError.Remote> {
@@ -23,12 +34,12 @@ class DefaultStackUsersRepository @Inject constructor(
             .map { dto ->
                 dto.items
                     .map {
-                        it.toDomain()
+                        it.toStackUserInfoModel()
                     }
             }
     }
 
-    override fun getPagedUsers(sort: String): Flow<PagingData<StackUserInfoModel>> {
+    override fun getStackUsersUsingPaging(sort: String): Flow<PagingData<StackUserInfoModel>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 30,
@@ -40,10 +51,48 @@ class DefaultStackUsersRepository @Inject constructor(
                     remote = remoteDataSource,
                     pageSize = 30,
                     order = "desc",
-                    sort = sort,               // "reputation" / "creation" / etc.
+                    sort = sort,
                     site = "stackoverflow"
                 )
             }
         ).flow
     }
+
+    override fun getStackUserFromRemote(): Flow<PagingData<StackUserInfoModel>> =
+        Pager(
+            config = PagingConfig(pageSize = 30, enablePlaceholders = false),
+            remoteMediator = mediator,                  // must be RemoteMediator<Int, StackUserJoin>
+            pagingSourceFactory = { db.stackUserInfoDao().pagingSource() }
+        ).flow.map { paging -> paging.map { it.toDomain() } }
+
+    override suspend fun setFollow(userId: Int, follow: Boolean) {
+        val dao = db.stackUserInfoDao()
+        if (follow) dao.follow(FollowEntity(userId)) else dao.unfollow(userId)
+    }
 }
+
+fun StackUserJoin.toDomain() = StackUserInfoModel(
+    userId = user.userId,
+    displayName = user.displayName,
+    profileImage = user.profileImage,
+    reputation = user.reputation,
+    location = user.location,
+    link = user.link,
+    websiteUrl = user.websiteUrl,
+    gold = user.gold,
+    silver = user.silver,
+    bronze = user.bronze,
+    isFollowed = isFollowed,
+    accountId = user.accountId,
+    userType = user.userType,
+    acceptRate = user.acceptRate,
+    creationDate = user.creationDate,
+    isEmployee = user.isEmployee,
+    lastAccessDate = user.lastAccessDate,
+    lastModifiedDate = user.lastModifiedDate,
+    reputationChangeDay = user.reputationChangeDay,
+    reputationChangeMonth = user.reputationChangeMonth,
+    reputationChangeQuarter = user.reputationChangeQuarter,
+    reputationChangeWeek = user.reputationChangeWeek,
+    reputationChangeYear = user.reputationChangeYear
+)

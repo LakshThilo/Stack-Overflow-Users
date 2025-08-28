@@ -7,13 +7,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class StackUserDto(
     @Json(name = "has_more") val hasMore: Boolean,
-    @Json(name = "items") val items: List<UserInfoDto>,
+    @Json(name = "items") val items: List<StackUserInfoDto>,
     @Json(name = "quota_max") val quotaMax: Int,
     @Json(name = "quota_remaining") val quotaRemaining: Int
 )
 
 @JsonClass(generateAdapter = true)
-data class UserInfoDto(
+data class StackUserInfoDto(
     @Json(name = "user_id") val userId: Int,
     @Json(name = "account_id") val accountId: Int? = null,
     @Json(name = "display_name") val displayName: String,

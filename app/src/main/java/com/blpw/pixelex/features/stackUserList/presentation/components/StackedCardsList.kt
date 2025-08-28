@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.presentation.PagingListFooterError
@@ -23,13 +24,11 @@ import com.blpw.pixelex.features.stackUserList.presentation.StackUsersViewModel
 
 @Composable
 fun StackedCardsList(
-    usersSorted: List<StackUserInfoModel>,
-    viewModel: StackUsersViewModel,
-    colors: List<Color>,
-    overlap: Dp = 22.dp
+    pagingItems: LazyPagingItems<StackUserInfoModel>,
+    overlap: Dp = 22.dp,
+    onFollowClick: (userId: Int, isCurrentlyFollowed: Boolean) -> Unit
 ) {
     var expandedId by rememberSaveable { mutableStateOf<Int?>(null) }
-    val pagingItems = viewModel.usersPaging.collectAsLazyPagingItems()
 
     LazyColumn(
         contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
@@ -37,23 +36,19 @@ fun StackedCardsList(
     ) {
         items(
             count = pagingItems.itemCount,
-            key = { index ->
-                pagingItems[index]?.userId
-                    ?: usersSorted.getOrNull(index)?.userId
-                    ?: index
-            }
+            key = { idx -> pagingItems[idx]?.userId ?: idx }
         ) { index ->
-            val user = pagingItems[index] ?: usersSorted.getOrNull(index) ?: return@items
+            val user = pagingItems[index] ?: return@items
 
             val expanded = expandedId == user.userId
             StackUserItemCard(
                 user = user,
-                containerColor = colors[index % colors.size],
                 expanded = expanded,
-                onClick = { expandedId = if (expanded) null else user.userId },
+                onStackItemClick = { expandedId = if (expanded) null else user.userId },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .zIndex(if (expanded) 100f else index.toFloat())
+                    .zIndex(if (expanded) 100f else index.toFloat()),
+                onFollowClick = { onFollowClick(user.userId, user.isFollowed) }
             )
         }
         when (val append = pagingItems.loadState.append) {

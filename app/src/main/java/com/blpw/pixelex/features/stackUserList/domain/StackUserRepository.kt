@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.Flow
 interface StackUserRepository {
     // Remote
     suspend fun getStackUsers(): Result<List<StackUserInfoModel>, DataError.Remote>
-    fun getPagedUsers(sort: String = "reputation"): Flow<PagingData<StackUserInfoModel>>
+    fun getStackUsersUsingPaging(sort: String = "reputation"): Flow<PagingData<StackUserInfoModel>>
 
     // Local
+    fun getStackUserFromRemote(): Flow<PagingData<StackUserInfoModel>>
+    suspend fun setFollow(userId: Int, follow: Boolean)
 }

@@ -69,6 +69,11 @@ dependencies {
     implementation(libs.bundles.material3)
     implementation(libs.bundles.paging)
 
+    // Room
+    implementation(libs.bundles.room)
+    kapt(libs.room.compiler)
+
+
     implementation(libs.navigation.compose)
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
@@ -97,10 +102,6 @@ dependencies {
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Room
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
 
     // Testing
     testImplementation(libs.junit)

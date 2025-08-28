@@ -20,18 +20,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
+import com.blpw.pixelex.ui.theme.CardTextGreen
 
 @Composable
 fun FollowPill(
-    text: String,
+    user: StackUserInfoModel,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
     Surface(
         shape = RoundedCornerShape(18.dp),
-        color = Color.White.copy(alpha = 0.95f),
+        color = if (user.isFollowed) Color.Gray else Color.White.copy(alpha = 0.95f),
         shadowElevation = 3.dp,
-        border = BorderStroke(1.dp, Color.Black.copy(alpha = 0.06f)),
+        border = BorderStroke(2.dp, CardTextGreen),
         modifier = modifier
             .heightIn(min = 36.dp)
             .wrapContentWidth()
@@ -43,14 +45,14 @@ fun FollowPill(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             Text(
-                text = text,
+                text = "Follow",
                 style = MaterialTheme.typography.labelLarge,
-                color = Color(0xFF1B1B1F)
+                color = CardTextGreen
             )
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = null,
-                tint = Color(0xFF1B1B1F),
+                tint = CardTextGreen,
                 modifier = Modifier.size(18.dp)
             )
         }

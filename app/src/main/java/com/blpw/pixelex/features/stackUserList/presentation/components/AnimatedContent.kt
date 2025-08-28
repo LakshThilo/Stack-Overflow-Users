@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.blpw.pixelex.common.presentation.lastOnlineText
 import com.blpw.pixelex.common.presentation.toDisplayUrl
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
+import com.blpw.pixelex.ui.theme.CardTextGreen
 
 @Composable
 fun AnimatedContent(expanded: Boolean, user: StackUserInfoModel) {
@@ -67,7 +68,7 @@ fun AnimatedContent(expanded: Boolean, user: StackUserInfoModel) {
             user.location?.takeIf { it.isNotBlank() }?.let { loc ->
                 InfoRow(
                     icon = Icons.Default.LocationOn,
-                    value = loc
+                    value = loc.toDisplayUrl()
                 )
             }
 
@@ -181,8 +182,8 @@ private fun InfoRow(
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = "Location",
-            tint = Color.Black.copy(alpha = 0.6f),
+            contentDescription = null,
+            tint = CardTextGreen,
             modifier = Modifier.size(18.dp)
         )
         Spacer(Modifier.width(8.dp))
@@ -190,10 +191,7 @@ private fun InfoRow(
             Text(
                 text = value,
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (onClick == null)
-                    MaterialTheme.colorScheme.onSurface
-                else
-                    MaterialTheme.colorScheme.primary,
+                color = CardTextGreen,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )

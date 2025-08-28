@@ -3,7 +3,7 @@ package com.blpw.pixelex.features.stackUserList.data
 import androidx.paging.PagingSource
 import com.blpw.pixelex.common.domain.Result
 import androidx.paging.PagingState
-import com.blpw.pixelex.features.stackUserList.data.mappers.toDomain
+import com.blpw.pixelex.features.stackUserList.data.mappers.toStackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.data.network.RemoteStackUsersDataSource
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 
@@ -32,7 +32,7 @@ class StackUsersPagingSource(
         )) {
             is Result.Success -> {
                 val dto = result.data
-                val items = dto.items.map { it.toDomain() }
+                val items = dto.items.map { it.toStackUserInfoModel() }
                 val nextKey = if (dto.hasMore) page + 1 else null
                 LoadResult.Page(
                     data = items,

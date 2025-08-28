@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material3.Icon
@@ -23,14 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.blpw.pixelex.common.presentation.lastOnlineText
 import com.blpw.pixelex.common.presentation.memberFor
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
+import com.blpw.pixelex.ui.theme.CardTextGreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun StackUserInf(user: StackUserInfoModel, modifier: Modifier = Modifier) {
+fun StackUserInf(
+    user: StackUserInfoModel,
+    modifier: Modifier = Modifier,
+    onFollowClick: () -> Unit = {}
+) {
     Column(
         modifier = modifier.padding(start = 22.dp, top = 22.dp)
     ) {
@@ -38,7 +41,7 @@ fun StackUserInf(user: StackUserInfoModel, modifier: Modifier = Modifier) {
             Text(
                 text = user.displayName,
                 style = MaterialTheme.typography.titleLarge,
-                color = Color.Black
+                color = CardTextGreen
             )
             if (user.userType == "registered") {
                 Spacer(Modifier.width(6.dp))
@@ -58,13 +61,13 @@ fun StackUserInf(user: StackUserInfoModel, modifier: Modifier = Modifier) {
             Icon(
                 imageVector = Icons.Outlined.AccessTime,
                 contentDescription = "Location",
-                tint = Color.Black.copy(alpha = 0.6f),
+                tint = CardTextGreen,
                 modifier = Modifier.padding(end = 6.dp).size(16.dp)
             )
             Text(
                 text = user.lastAccessDate.lastOnlineText(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black.copy(alpha = 0.6f)
+                color = CardTextGreen
             )
         }
 
@@ -72,14 +75,14 @@ fun StackUserInf(user: StackUserInfoModel, modifier: Modifier = Modifier) {
         Text(
             text = user.creationDate.memberFor(),
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.Black.copy(alpha = 0.5f)
+            color = CardTextGreen
         )
         Spacer(Modifier.height(6.dp))
         user.reputation?.let {
             Text(
                 text = "$it",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
+                color = CardTextGreen
             )
         }
         Row(
@@ -87,10 +90,10 @@ fun StackUserInf(user: StackUserInfoModel, modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.End
         ) {
             FollowPill(
-                text = "Follow",
+                user,
                 modifier = Modifier
-                    .padding(end = 20.dp),
-                onClick = { }
+                    .padding(end = 18.dp),
+                onClick = onFollowClick
             )
         }
     }

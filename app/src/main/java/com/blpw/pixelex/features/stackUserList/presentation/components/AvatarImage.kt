@@ -1,5 +1,7 @@
 package com.blpw.pixelex.features.stackUserList.presentation.components
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,6 +17,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
+import com.blpw.pixelex.ui.theme.CardTextGreen
 
 @Composable
 fun AvatarImage(
@@ -23,7 +26,8 @@ fun AvatarImage(
 ) {
     Box(
         modifier = modifier
-            .size(76.dp),
+            .size(76.dp)
+            .border(2.dp, CardTextGreen, CircleShape),
         contentAlignment = Alignment.Center
     ) {
         AsyncImage(

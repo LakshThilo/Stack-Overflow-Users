@@ -22,5 +22,6 @@ data class StackUserInfoModel(
     val reputationChangeYear: Int,
     val bronze: Int,
     val silver: Int,
-    val gold: Int
+    val gold: Int,
+    val isFollowed: Boolean
 )
