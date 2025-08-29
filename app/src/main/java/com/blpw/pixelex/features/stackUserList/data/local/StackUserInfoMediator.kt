@@ -13,7 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class StackUserInfoMediator @Inject constructor(
+open class StackUserInfoMediator @Inject constructor(
     private val api: StackUsersApiService,
     private val db: StackUserDatabase
 ) : RemoteMediator<Int, StackUserJoin>() {
@@ -35,14 +35,16 @@ class StackUserInfoMediator @Inject constructor(
                 }
                 LoadType.PREPEND -> {
                     val remoteKey = getRemoteKeyForFirstItem(state)
-                    val prevKey = remoteKey?.prevKey
-                    if (prevKey == null) return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    val prevKey = remoteKey.prevKey
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
                     prevKey
                 }
                 LoadType.APPEND -> {
                     val remoteKey = getRemoteKeyForLastItem(state)
-                    val nextKey = remoteKey?.nextKey
-                    if (nextKey == null) return MediatorResult.Success(endOfPaginationReached = remoteKey != null)
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    val nextKey = remoteKey.nextKey
+                        ?: return MediatorResult.Success(endOfPaginationReached = true)
                     nextKey
                 }
             }

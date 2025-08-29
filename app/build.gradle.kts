@@ -108,4 +108,25 @@ dependencies {
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Paging tests (you already have these in TOML)
+    testImplementation(libs.paging.common)
+    testImplementation(libs.paging.testing)
+
+    // Room + Android context on JVM
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.room.testing)
+
+    // Coroutines + MockK
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+
+    // Optional helpers
+    testImplementation(libs.turbine)
+    testImplementation(libs.arch.core.testing)
+
+    // Instrumented tests (androidTestImplementation) — you already have these:
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

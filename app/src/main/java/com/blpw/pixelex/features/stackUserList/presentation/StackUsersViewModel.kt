@@ -8,6 +8,7 @@ import com.blpw.pixelex.features.stackUserList.domain.StackUserInfoModel
 import com.blpw.pixelex.features.stackUserList.domain.StackUserRepository
 import com.blpw.pixelex.features.stackUserList.domain.StackUserSort
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class StackUsersViewModel @Inject constructor(
-    private val stackUserRepository: StackUserRepository
+    private val stackUserRepository: StackUserRepository,
 ) : ViewModel() {
 
     val sort = MutableStateFlow(StackUserSort.REPUTATION)

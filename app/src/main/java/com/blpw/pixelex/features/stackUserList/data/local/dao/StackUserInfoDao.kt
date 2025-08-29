@@ -25,6 +25,11 @@ interface StackUserInfoDao {
     @Query("DELETE FROM follows WHERE userId = :id")
     suspend fun unfollow(id: Int)
 
+    @Query("SELECT COUNT(*) FROM users") suspend fun countUsers(): Int
+
+    @Query("SELECT userId FROM follows")
+    suspend fun getAllFollowsIds(): List<Int>
+
     // paging (ORDER BY whatever you need; example uses reputation)
     @Query("""
         SELECT u.*,
